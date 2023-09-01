@@ -1,6 +1,9 @@
 import React, { ReactNode, createContext } from 'react';
 import { SubmitHandler } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+// ~
 import { FormSchemaType } from 'schema';
+import { StudentsActions } from 'store/reducers/SinhVienReducer/slice';
 
 interface FormProviderProps {
     children: ReactNode;
@@ -10,15 +13,17 @@ interface FormContextValue {
     onSubmit: SubmitHandler<FormSchemaType>;
 }
 
-const FormContext = createContext<FormContextValue | null>(null);
+const FormContext = createContext<FormContextValue>({} as FormContextValue);
 
 const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
+    const dispatch = useDispatch();
+
     const onSubmit: SubmitHandler<FormSchemaType> = value => {
-        console.log(value);
+        dispatch(StudentsActions.addStudent(value));
     };
 
     const value: FormContextValue = { onSubmit };
-    return <FormContext.Provider value={value}>{children} </FormContext.Provider>;
+    return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };
 
 export { FormContext, FormProvider };

@@ -18,11 +18,10 @@ const FormTemplate = () => {
     });
 
     // dòng này báo lỗi onsubmit không tồn tại trong type FormContextValue
-    const context = useContext(FormContext);
-    console.log(context)
+    const { onSubmit } = useContext(FormContext);
 
     return (
-        <div className='max-w-screen-lg mx-auto border' onSubmit={handleSubmit(context.onSubmit)}>
+        <div className='max-w-screen-lg mx-auto border' onSubmit={handleSubmit(onSubmit)}>
             <h1 className='text-center bg-slate-900 text-white text-2xl font-bold p-2 mb-0'>Thông tin sinh viên</h1>
             <form noValidate className='grid grid-rows-2 gap-4 p-4'>
                 <div className='grid grid-cols-2 gap-4'>

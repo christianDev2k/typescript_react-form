@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ButtonStyled = styled.button<{ $type: 'danger' | 'success' }>`
+export const ButtonStyled = styled.button<{ $type: 'danger' | 'success'}>`
     padding: 6px 12px;
     border-radius: 6px;
     transition: all 0.25s;

@@ -1,7 +1,13 @@
+import { useSelector } from 'react-redux';
+// ~
 import { ButtonStyled } from 'assets';
+// import { StudentsReducer } from 'store/reducers/SinhVienReducer/slice';
 import './table.module.scss';
 
 const TableTemplate = () => {
+    // Dòng này báo lỗi state is of type 'unknown'
+    const { listStudents } = useSelector(state => state.StudentsReducer);
+
     return (
         <div className='max-w-screen-lg mx-auto border mt-4'>
             <div className='p-4'>
@@ -35,19 +41,17 @@ const TableTemplate = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {(searchResults?.length ? searchResults : students).map(student => (
-                        <tr key={student.id}>
-                            <td>{student.id}</td>
-                            <td>{student.name}</td>
-                            <td>{student.phone}</td>
-                            <td>{student.email}</td>
+                    {/* {listStudents.map(student => (
+                        <tr key={listStudents.id}>
+                            <td>{listStudents.id}</td>
+                            <td>{listStudents.name}</td>
+                            <td>{listStudents.phoneNumber}</td>
+                            <td>{listStudents.email}</td>
                             <td className='text-center'>
-                                <ButtonStyled className='mr-2' onClick={handleEdit(student.id)}>
+                                <ButtonStyled $type='success' className='mr-2'>
                                     Sửa
                                 </ButtonStyled>
-                                <ButtonStyled type='danger' onClick={handleDelete(student.id)}>
-                                    Xóa
-                                </ButtonStyled>
+                                <ButtonStyled $type='danger'>Xóa</ButtonStyled>
                             </td>
                         </tr>
                     ))} */}
