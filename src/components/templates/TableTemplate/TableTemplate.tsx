@@ -1,12 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useContext } from 'react';
 // ~
 import { ButtonStyled } from 'assets';
-// import { StudentsReducer } from 'store/reducers/SinhVienReducer/slice';
+import { useAppSelector } from 'store';
+import { TableContext } from 'context';
 import './table.module.scss';
 
 const TableTemplate = () => {
-    // Dòng này báo lỗi state is of type 'unknown'
-    const { listStudents } = useSelector(state => state.StudentsReducer);
+    console.log('Table render');
+    const { listStudents } = useAppSelector(state => state.StudentsReducer);
+    const { handleDeleteStudent } = useContext(TableContext);
 
     return (
         <div className='max-w-screen-lg mx-auto border mt-4'>
@@ -41,20 +43,22 @@ const TableTemplate = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {listStudents.map(student => (
-                        <tr key={listStudents.id}>
-                            <td>{listStudents.id}</td>
-                            <td>{listStudents.name}</td>
-                            <td>{listStudents.phoneNumber}</td>
-                            <td>{listStudents.email}</td>
+                    {listStudents.map(student => (
+                        <tr key={student.id}>
+                            <td>{student.id}</td>
+                            <td>{student.name}</td>
+                            <td>{student.phoneNumber}</td>
+                            <td>{student.email}</td>
                             <td className='text-center'>
                                 <ButtonStyled $type='success' className='mr-2'>
                                     Sửa
                                 </ButtonStyled>
-                                <ButtonStyled $type='danger'>Xóa</ButtonStyled>
+                                <ButtonStyled $type='danger' onClick={handleDeleteStudent(student.id)}>
+                                    Xóa
+                                </ButtonStyled>
                             </td>
                         </tr>
-                    ))} */}
+                    ))}
                 </tbody>
             </table>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 // ~
@@ -8,7 +8,7 @@ import './index.css';
 import { FormProvider, TableProvider } from 'context';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <FormProvider>
                 <TableProvider>
@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </TableProvider>
             </FormProvider>
         </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

@@ -1,10 +1,5 @@
 import { z } from 'zod';
 export const FormSchema = z.object({
-    id: z
-        .string()
-        .nonempty('Vui lòng nhập ID')
-        .regex(/^[a-zA-Z0-9]*$/, 'ID gồm kí tự và số')
-        .max(6, 'ID tối đa 6 kí tự và số'),
     name: z
         .string()
         .nonempty('Vui lòng nhập tên của bạn')

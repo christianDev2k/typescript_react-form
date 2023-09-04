@@ -18,10 +18,12 @@ const FormContext = createContext<FormContextValue>({} as FormContextValue);
 const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     const dispatch = useDispatch();
 
+    // Handle onsubmit
     const onSubmit: SubmitHandler<FormSchemaType> = value => {
         dispatch(StudentsActions.addStudent(value));
     };
 
+    // Value context
     const value: FormContextValue = { onSubmit };
     return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
 };

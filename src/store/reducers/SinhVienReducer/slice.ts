@@ -6,8 +6,14 @@ interface State {
     editStudent: Student | undefined;
 }
 
+interface PayloadType {
+    name: string;
+    phoneNumber: string;
+    email: string;
+}
+
 interface EditPayload {
-    id: string;
+    id: number;
     student: Student;
 }
 
@@ -20,10 +26,10 @@ const ListStudentsSlice = createSlice({
     name: 'StudentsSlice',
     initialState,
     reducers: {
-        addStudent: (state, action: PayloadAction<Student>) => {
-            state.listStudents = [...state.listStudents, action.payload];
+        addStudent: (state, action: PayloadAction<PayloadType>) => {
+            state.listStudents.push({ ...action.payload, id: state.listStudents.length + 1 });
         },
-        deleteStudent: (state, action: PayloadAction<string>) => {
+        deleteStudent: (state, action: PayloadAction<number>) => {
             state.listStudents = state.listStudents.filter(student => {
                 if (student.id !== action.payload) return student;
             });

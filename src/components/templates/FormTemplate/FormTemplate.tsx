@@ -8,6 +8,7 @@ import { ErrorsStyled, InputStyled } from './StyledForm';
 import { FormContext } from 'context';
 
 const FormTemplate = () => {
+    console.log('Form render');
     const {
         register,
         handleSubmit,
@@ -17,7 +18,6 @@ const FormTemplate = () => {
         resolver: zodResolver(FormSchema),
     });
 
-    // dòng này báo lỗi onsubmit không tồn tại trong type FormContextValue
     const { onSubmit } = useContext(FormContext);
 
     return (
@@ -25,15 +25,6 @@ const FormTemplate = () => {
             <h1 className='text-center bg-slate-900 text-white text-2xl font-bold p-2 mb-0'>Thông tin sinh viên</h1>
             <form noValidate className='grid grid-rows-2 gap-4 p-4'>
                 <div className='grid grid-cols-2 gap-4'>
-                    <div>
-                        <label htmlFor=''>Mã sinh viên</label>
-                        <InputStyled
-                            type='text'
-                            placeholder='Mã sinh viên tối đa 6 kí tự chữ và số'
-                            {...register('id')}
-                        />
-                        {errors.id && <ErrorsStyled>{errors.id.message}</ErrorsStyled>}
-                    </div>
                     <div>
                         <label htmlFor=''>Họ và tên</label>
                         <InputStyled type='text' placeholder='Nguyen Van A' {...register('name')} />
