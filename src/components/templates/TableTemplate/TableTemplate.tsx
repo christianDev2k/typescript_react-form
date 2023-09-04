@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 // ~
 import { ButtonStyled } from 'assets';
 import { useAppSelector } from 'store';
@@ -6,13 +7,14 @@ import { TableContext } from 'context';
 import './table.module.scss';
 
 const TableTemplate = () => {
-    console.log('Table render');
     const { listStudents } = useAppSelector(state => state.StudentsReducer);
-    const { handleDeleteStudent } = useContext(TableContext);
+    const { handleDeleteStudent, handleEditStudent, setSearchResult, onSubmit, searchResult } =
+        useContext(TableContext);
+    const { register, handleSubmit } = useForm<{ searchByName: string }>();
 
     return (
-        <div className='max-w-screen-lg mx-auto border mt-4'>
-            <div className='p-4'>
+        <div className='max-w-screen-lg mx-auto border mt-4' onSubmit={handleSubmit(onSubmit)}>
+            <form className='p-4'>
                 <label htmlFor='search' className='block font-medium leading-6 text-gray-900'>
                     Tìm kiếm:
                 </label>
@@ -22,15 +24,18 @@ const TableTemplate = () => {
                         id='search'
                         placeholder='Nguyễn Văn A'
                         className='block w-1/2 mr-2 rounded-md border border-gray-400 py-1.5 px-2 text-gray-900'
+                        {...register('searchByName', {
+                            required: true,
+                        })}
                     />
                     <ButtonStyled $type='success'>Tìm kiếm</ButtonStyled>
-                    {/* {searchResults?.length ? (
-                        <ButtonStyled type='danger' onClick={handleCancelSearch} className='ml-2'>
+                    {searchResult.length ? (
+                        <ButtonStyled $type='danger' className='ml-2' onClick={() => setSearchResult([])}>
                             Hủy bỏ
                         </ButtonStyled>
-                    ) : null} */}
+                    ) : null}
                 </div>
-            </div>
+            </form>
 
             <table className='w-full'>
                 <thead className='bg-slate-900 text-white font-bold'>
@@ -43,14 +48,14 @@ const TableTemplate = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {listStudents.map(student => (
+                    {(!searchResult.length ? listStudents : searchResult).map(student => (
                         <tr key={student.id}>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
                             <td>{student.phoneNumber}</td>
                             <td>{student.email}</td>
                             <td className='text-center'>
-                                <ButtonStyled $type='success' className='mr-2'>
+                                <ButtonStyled $type='success' className='mr-2' onClick={handleEditStudent(student.id)}>
                                     Sửa
                                 </ButtonStyled>
                                 <ButtonStyled $type='danger' onClick={handleDeleteStudent(student.id)}>

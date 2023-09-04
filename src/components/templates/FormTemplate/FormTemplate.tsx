@@ -1,24 +1,36 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 // ~
 import { ButtonStyled } from 'assets';
-import { FormSchema, FormSchemaType } from 'schema';
 import { ErrorsStyled, InputStyled } from './StyledForm';
 import { FormContext } from 'context';
+import { useAppSelector } from 'store';
 
 const FormTemplate = () => {
     console.log('Form render');
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<FormSchemaType>({
-        mode: 'onBlur',
-        resolver: zodResolver(FormSchema),
+    const { onSubmit, register, handleSubmit, reset, handleCancelEdit, errors, isSubmitSuccessful } =
+        useContext(FormContext);
+    const { editStudent } = useAppSelector(state => state.StudentsReducer);
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset({
+                name: '',
+                phoneNumber: '',
+                email: '',
+            });
+        }
     });
 
-    const { onSubmit } = useContext(FormContext);
+    useEffect(() => {
+        if (editStudent) {
+            const { name, phoneNumber, email } = editStudent.student;
+            reset({
+                name,
+                phoneNumber,
+                email,
+            });
+        }
+    }, [editStudent, reset]);
 
     return (
         <div className='max-w-screen-lg mx-auto border' onSubmit={handleSubmit(onSubmit)}>
@@ -27,7 +39,7 @@ const FormTemplate = () => {
                 <div className='grid grid-cols-2 gap-4'>
                     <div>
                         <label htmlFor=''>Họ và tên</label>
-                        <InputStyled type='text' placeholder='Nguyen Van A' {...register('name')} />
+                        <InputStyled type='text' placeholder='VD: Nguyen Van A' {...register('name')} />
                         {errors.name && <ErrorsStyled>{errors.name.message}</ErrorsStyled>}
                     </div>
                 </div>
@@ -39,12 +51,21 @@ const FormTemplate = () => {
                     </div>
                     <div>
                         <label htmlFor=''>Email</label>
-                        <InputStyled type='text' placeholder='nhandeptrai@gmail.com' {...register('email')} />
+                        <InputStyled type='text' placeholder='VD: nhandeptrai@gmail.com' {...register('email')} />
                         {errors.email && <ErrorsStyled>{errors.email.message}</ErrorsStyled>}
                     </div>
                 </div>
                 <div>
-                    <ButtonStyled $type='success'>Thêm sinh viên</ButtonStyled>
+                    {!editStudent ? (
+                        <ButtonStyled $type='success'>Thêm sinh viên</ButtonStyled>
+                    ) : (
+                        <div>
+                            <ButtonStyled $type='success'>Chỉnh sửa sinh viên</ButtonStyled>
+                            <ButtonStyled $type='danger' className='ml-2' onClick={handleCancelEdit}>
+                                Hủy cập nhật
+                            </ButtonStyled>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>

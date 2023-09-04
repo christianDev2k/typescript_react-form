@@ -1,20 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Student } from 'types';
+import { Form, Student } from 'types';
 
-interface State {
-    listStudents: Student[];
-    editStudent: Student | undefined;
-}
-
-interface PayloadType {
-    name: string;
-    phoneNumber: string;
-    email: string;
-}
+interface PayloadType extends Form {}
 
 interface EditPayload {
     id: number;
-    student: Student;
+    student: Form;
+}
+
+interface State {
+    listStudents: Student[];
+    editStudent: EditPayload | undefined;
 }
 
 const initialState: State = {
@@ -34,14 +30,22 @@ const ListStudentsSlice = createSlice({
                 if (student.id !== action.payload) return student;
             });
         },
-        editStudent: (state, action: PayloadAction<Student>) => {
-            state.editStudent = action.payload;
+        editStudent: (state, action: PayloadAction<number | undefined>) => {
+            if (!action.payload) {
+                state.editStudent = undefined;
+                return;
+            }
+
+            const index = state.listStudents.findIndex(student => student.id === action.payload);
+            const { name, phoneNumber, email } = state.listStudents[index];
+            state.editStudent = { id: action.payload, student: { name, phoneNumber, email } };
         },
-        updateStudent: (state, action: PayloadAction<EditPayload>) => {
+        updateStudent: (state, action: PayloadAction<Form>) => {
             state.listStudents = state.listStudents.map(student => {
-                if (student.id === action.payload.id) return action.payload.student;
+                if (student.id === state.editStudent?.id) return { ...action.payload, id: state.editStudent?.id };
                 return student;
             });
+            state.editStudent = undefined;
         },
     },
 });
